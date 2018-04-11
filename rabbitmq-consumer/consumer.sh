@@ -20,7 +20,11 @@ while true; do
     CMDLINE=$(/usr/bin/amqp-consume --url=$BROKER_URL -q foo -c 1 cat)
 
     # Run the command that was sent
-    echo ">> Running command: ${CMDLINE}"
+    CPU_COUNT=$(nproc)
+    AVAIL_RAM=$(free -hg | grep Mem | awk '{ print $2 }')
+    echo ">> CPU count: $CPU_COUNT"
+    echo ">> Available memory: $AVAIL_RAM"
+    echo ">> Running command: $CMDLINE"
     $CMDLINE
     RETCODE=$?
 
