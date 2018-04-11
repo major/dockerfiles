@@ -1,0 +1,3 @@
+upgrade
+install bind-utils curl librabbitmq-tools python python-devel python-pip wget
+clean all
