@@ -14,6 +14,10 @@ Consuming work from:
 
 EOF
 
+# Tell Kube/OpenShift that we're ready
+mkdir -p /opt/skt/
+touch /opt/skt/ready.txt
+
 # Consume the message queue
 CMDLINE=$(/usr/bin/amqp-consume --url=$BROKER_URL -q foo -c 1 cat)
 
