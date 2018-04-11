@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 cat <<"EOF"
 ******************************************************************************
      _    _                        _
@@ -8,23 +8,24 @@ cat <<"EOF"
 |___/_|\_\\__| |_|  \___|\__,_|\__,_|\__, |
                                      |___/
 ******************************************************************************
-Consuming work from:
-
-    $BROKER_URL
-
 EOF
 
-# Tell Kube/OpenShift that we're ready
-mkdir -p /opt/skt/
-touch /opt/skt/ready.txt
+while true; do
 
-# Consume the message queue
-CMDLINE=$(/usr/bin/amqp-consume --url=$BROKER_URL -q foo -c 1 cat)
+    # Tell Kube/OpenShift that we're ready
+    touch /opt/skt/ready.txt
 
-# Run the command that was sent
-$CMDLINE
-RETCODE=$?
+    # Consume the message queue
+    echo ">> Waiting for new jobs from ${BROKER_URL}..."
+    CMDLINE=$(/usr/bin/amqp-consume --url=$BROKER_URL -q foo -c 1 cat)
 
-# Sleep for 5 seconds after the work is complete
-sleep 5
-exit $RETCODE
+    # Run the command that was sent
+    echo ">> Running command: ${CMDLINE}"
+    $CMDLINE
+    RETCODE=$?
+
+    # Clean up afterwards
+    echo ">> Cleaning up"
+    rm -rf /opt/skt/*
+
+done
