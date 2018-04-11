@@ -1,6 +1,6 @@
 upgrade
 # Packages for queue consumption
-install bind-utils curl librabbitmq-tools python python-devel python-pip wget
+install bind-utils curl librabbitmq-tools python python-devel procps-ng python-pip wget
 # Kernel compile requirements
 install dnf-plugins-core bison flex python python-pip git "@Development Tools" elfutils-libelf-devel openssl-devel bc hostname xz
 builddep kernel
